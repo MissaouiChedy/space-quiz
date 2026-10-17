@@ -385,19 +385,19 @@
       return shuffledQuestions;
     }
 
-    let quizQuestions = randomizeQuestions();
+    let examQuestions = randomizeQuestions();
     let current = 0;
     let score = 0;
     let answered = false;
 
     function renderQuestion() {
-      const item = quizQuestions[current];
+      const item = examQuestions[current];
       answered = false;
-      questionCount.textContent = `Question ${current + 1} of ${quizQuestions.length}`;
+      questionCount.textContent = `Question ${current + 1} of ${examQuestions.length}`;
       scoreLabel.textContent = score;
       category.textContent = item.category;
       questionTitle.textContent = item.question;
-      progress.style.width = `${((current + 1) / quizQuestions.length) * 100}%`;
+      progress.style.width = `${((current + 1) / examQuestions.length) * 100}%`;
       progressTrack.setAttribute("aria-valuenow", current + 1);
       feedback.hidden = true;
       feedback.className = "feedback";
@@ -417,7 +417,7 @@
     function chooseAnswer(selected) {
       if (answered) return;
       answered = true;
-      const item = quizQuestions[current];
+      const item = examQuestions[current];
       const buttons = [...answers.children];
       buttons.forEach(button => { button.disabled = true; });
 
@@ -437,7 +437,7 @@
 
       feedback.hidden = false;
       feedback.classList.add("show");
-      nextButton.innerHTML = current === quizQuestions.length - 1
+      nextButton.innerHTML = current === examQuestions.length - 1
         ? 'See your results <span aria-hidden="true">→</span>'
         : 'Next question <span aria-hidden="true">→</span>';
       nextButton.hidden = false;
@@ -447,7 +447,7 @@
     function showResults() {
       quizScreen.hidden = true;
       resultScreen.hidden = false;
-      const ratio = score / quizQuestions.length;
+      const ratio = score / examQuestions.length;
       const reaction = ratio === 1 ? "🏆" : ratio >= 0.7 ? "🚀" : ratio >= 0.4 ? "🌙" : "🪐";
       const headline = ratio === 1 ? "Out of this world!" : ratio >= 0.7 ? "Mission accomplished!" : ratio >= 0.4 ? "Nice work, astronaut!" : "Keep exploring!";
       const message = ratio === 1
@@ -462,14 +462,14 @@
         <p class="eyebrow">MISSION COMPLETE</p>
         <h1>${headline}</h1>
         <p class="result-copy">${message}</p>
-        <div class="result-score">${score}<span>/ ${quizQuestions.length} correct</span></div>
+        <div class="result-score">${score}<span>/ ${examQuestions.length} correct</span></div>
         <button class="restart" type="button">Play again <span aria-hidden="true">↻</span></button>
       `;
       resultScreen.querySelector(".restart").addEventListener("click", restart);
     }
 
     function restart() {
-      quizQuestions = randomizeQuestions();
+      examQuestions = randomizeQuestions();
       current = 0;
       score = 0;
       resultScreen.hidden = true;
@@ -478,7 +478,7 @@
     }
 
     nextButton.addEventListener("click", () => {
-      if (current === quizQuestions.length - 1) {
+      if (current === examQuestions.length - 1) {
         showResults();
       } else {
         current++;
